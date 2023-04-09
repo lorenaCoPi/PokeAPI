@@ -1,15 +1,14 @@
-const form$$ = document.querySelector("form");
+//const form$$ = document.querySelector ("form");
 const pokemonContainer$$ = document.getElementById("container");
+let input$$ = document.getElementById("pokedex").value.toLowerCase();
+let button$$ = document.querySelector("button");
 
-
-const getPokemon = () => {
-  let input$$ = document.getElementById("pokedex").value.toLowerCase();
-  console.log(input$$);
+const getPokemon = (input$$) => {
     fetch(`https://pokeapi.co/api/v2/pokemon/?limit=151/${input$$}`)
       .then((response) => {
     return response.json();
   }).then((data) => {
-    for(pokemon of data.results) {
+    for(let pokemon of data.results) {
       fetch(pokemon.url)
         .then((response)=> response.json())
         .then((data) => {
@@ -22,21 +21,31 @@ const getPokemon = () => {
         <p class="peso">Su peso es: ${data.weight} kg</p>
         <p class"tipo">Este pokemon es de tipo ${data.types[0].type.name}</p>
         </div>
-        </div>`;
+        </div>`;        
           pokemonContainer$$.innerHTML += html;
+         // console.log(data); 
           return data;
         });
       }
    })
    .catch((error) => console.log(`Mira este error: ${error}`));
   }
-  
-  /*form$$.addEventListener("input", (event)  => {
-  event.preventDefault();
-  let input$$ = document.getElementById("pokedex").value.toLowerCase();
-  //console.log(input$$);
-  getPokemon(input$$);
-  })*/
 
-  getPokemon();
-  
+getPokemon(input$$);
+
+button$$.addEventListener("click", (event) => {
+    event.preventDefault();
+    let input$$ = document.getElementById("pokedex").value.toLowerCase();
+    const pokemonTarjetas = document.querySelectorAll(".cards");
+
+    pokemonTarjetas.forEach((div) => {
+      const pokemonName = div.querySelector(".card-title").textContent.toLowerCase();
+      if (pokemonName.includes(input$$)) {
+        div.style.display = "flex-inline";  
+        return input$$;  
+      } else {
+        div.style.display = "none";
+        //return getPokemon();
+      }
+    });
+  });

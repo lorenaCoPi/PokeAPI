@@ -21,7 +21,8 @@ body {
   }
 
   form {
-    margin-left: 32%;
+    font-size: 20px;
+    margin-left: 12%;
     color:#0671be;
     font-weight: bold;
   }

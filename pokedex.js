@@ -1,10 +1,9 @@
-//const form$$ = document.querySelector ("form");
 const pokemonContainer$$ = document.getElementById("container");
-let input$$ = document.getElementById("pokedex").value.toLowerCase();
+//let input$$ = document.getElementById("pokedex").value.toLowerCase();
 let button$$ = document.querySelector("button");
 
-const getPokemon = (input$$) => {
-    fetch(`https://pokeapi.co/api/v2/pokemon/?limit=151/${input$$}`)
+const getPokemon = () => {
+    fetch(`https://pokeapi.co/api/v2/pokemon/?limit=151/`)
       .then((response) => {
     return response.json();
   }).then((data) => {
@@ -12,6 +11,7 @@ const getPokemon = (input$$) => {
       fetch(pokemon.url)
         .then((response)=> response.json())
         .then((data) => {
+        const mapType = data.types.map((type) => type.type.name).join(", ");
         const html = `
         <ul class="cards">
         <li class="${data.types[0].type.name}">
@@ -19,7 +19,7 @@ const getPokemon = (input$$) => {
         <img src=${data.sprites.front_default} class="card-image"/>
         <p class="orden">Su id en la pokédex es: ${data.id}</p>
         <p class="peso">Su peso es: ${data.weight} kg</p>
-        <p class"tipo">Este pokemon es de tipo ${data.types[0].type.name}</p>
+        <p class"tipo">Este pokemon es de tipo ${mapType}</p>
         </div>
         </div>`;        
           pokemonContainer$$.innerHTML += html;
@@ -31,21 +31,20 @@ const getPokemon = (input$$) => {
    .catch((error) => console.log(`Mira este error: ${error}`));
   }
 
-getPokemon(input$$);
+getPokemon();
 
 button$$.addEventListener("click", (event) => {
     event.preventDefault();
     let input$$ = document.getElementById("pokedex").value.toLowerCase();
-    const pokemonTarjetas = document.querySelectorAll(".cards");
+    const pokemonCards = document.querySelectorAll(".cards");
 
-    pokemonTarjetas.forEach((div) => {
+    pokemonCards.forEach((div) => {
       const pokemonName = div.querySelector(".card-title").textContent.toLowerCase();
       if (pokemonName.includes(input$$)) {
-        div.style.display = "flex-inline";  
+        div.style.display = "inline-flex";  
         return input$$;  
       } else {
         div.style.display = "none";
-        //return getPokemon();
       }
     });
   });
